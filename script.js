@@ -99,21 +99,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Exibe os times sorteados na tela.
+     * Exibe os times sorteados na tela. (VERSÃO CORRIGIDA)
      * @param {Array<Array<Object>>} times - Um array contendo os times (que são arrays de jogadores).
      * @param {Array<Object>} jogadoresSobrando - Um array com os jogadores que ficaram de fora.
      */
     function exibirTimes(times, jogadoresSobrando) {
         timesContainer.innerHTML = ''; // Limpa a área de resultados
 
-        if (times.length === 0) {
-            exibirMensagem('Não foi possível formar times.', 'info');
+        const timesCompletos = times.filter(time => time.length > 1);
+
+        if (timesCompletos.length === 0) {
+            exibirMensagem('Não foi possível formar times com os jogadores disponíveis.', 'warning');
+            // Mesmo sem times, mostramos quem sobrou
+             if (jogadoresSobrando.length > 0) {
+                const sobrasHTML = jogadoresSobrando.map(j => j.nomeHTML).join(', ');
+                const sobrasAlert = document.createElement('div');
+                sobrasAlert.className = 'col-12 mt-3';
+                sobrasAlert.innerHTML = `<div class="alert alert-secondary"><strong>Ficaram de fora:</strong> ${sobrasHTML}</div>`;
+                timesContainer.appendChild(sobrasAlert);
+            }
             return;
         }
 
-        times.forEach((time, index) => {
+        // 1. Adiciona os cards dos times
+        timesCompletos.forEach((time, index) => {
             const timeCard = document.createElement('div');
-            timeCard.className = 'col-lg-6 mb-4'; // Em telas grandes, mostra 2 times por linha
+            timeCard.className = 'col-lg-6 mb-4';
 
             let jogadoresHTML = '<ul class="list-group list-group-flush">';
             time.forEach(jogador => {
@@ -133,10 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
             timesContainer.appendChild(timeCard);
         });
         
-        // Se houver jogadores sobrando, exibe um alerta
-        if(jogadoresSobrando.length > 0) {
+        // 2. ADICIONA o alerta de quem sobrou, sem apagar os times
+        if (jogadoresSobrando.length > 0) {
             const sobrasHTML = jogadoresSobrando.map(j => j.nomeHTML).join(', ');
-            exibirMensagem(`<strong>Ficaram de fora:</strong> ${sobrasHTML}`, 'secondary');
+            
+            const sobrasAlert = document.createElement('div');
+            sobrasAlert.className = 'col-12 mt-3'; // `mt-3` adiciona um espaço acima do alerta
+            sobrasAlert.innerHTML = `
+                <div class="alert alert-secondary">
+                    <strong>Ficaram de fora:</strong> ${sobrasHTML}
+                </div>
+            `;
+            timesContainer.appendChild(sobrasAlert); // Usa appendChild para ADICIONAR, não substituir
         }
     }
 
