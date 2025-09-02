@@ -9,17 +9,16 @@
 </head>
 <body>
 
-    <div class="container my-5">
+    <div class="container my-4">
         <header class="text-center mb-4">
             <h1>🏐 Ditadura do Vôlei 🏐</h1>
             <p class="lead">A ferramenta oficial para acabar com as discussões na hora de montar os times.</p>
         </header>
 
-        <div class="row">
+        <div class="row g-4">
             <!-- Coluna da Esquerda: Controles e Lista de Jogadores -->
-            <div class="col-md-5">
+            <div class="col-lg-5">
                 
-                <!-- SEÇÃO PARA ADICIONAR NOVOS JOGADORES -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Adicionar Jogador Avulso</h5>
@@ -27,14 +26,13 @@
                             <input type="text" id="novo-jogador-nome" class="form-control" placeholder="Nome do jogador">
                             <button class="btn btn-outline-primary" type="button" id="btn-adicionar-jogador">Adicionar</button>
                         </div>
-                        <div class="form-check form-switch mt-2">
-                            <input class="form-check-input" type="checkbox" role="switch" id="novo-jogador-levantador">
-                            <label class="form-check-label" for="novo-jogador-levantador">É levantador?</label>
-                        </div>
                     </div>
                 </div>
 
-                <h4>Jogadores Disponíveis</h4>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">Jogadores Disponíveis</h4>
+                    <button class="btn btn-sm btn-outline-secondary" id="btn-selecionar-todos">Selecionar Todos</button>
+                </div>
                 <div id="lista-jogadores" class="list-group mb-4">
                     <!-- A lista de jogadores será populada pelo JS -->
                 </div>
@@ -43,17 +41,18 @@
                 <div class="d-grid gap-2">
                     <button id="sortear-duplas" class="btn btn-primary">Sortear Duplas (2x2)</button>
                     <button id="sortear-quartetos" class="btn btn-success">Sortear Quartetos (4x4)</button>
-                    <button id="resetar" class="btn btn-danger">Resetar Sorteio</button>
+                    <button id="refazer-sorteio" class="btn btn-info" disabled>Refazer Sorteio</button>
+                    <button id="resetar" class="btn btn-danger">Resetar Tudo</button>
                 </div>
             </div>
 
             <!-- Coluna da Direita: Exibição dos Times -->
-            <div class="col-md-7">
+            <div class="col-lg-7">
                 <h4>Times Sorteados</h4>
                 <div id="times-container" class="row">
                     <div class="col-12">
                         <div class="alert alert-info">
-                            Selecione os levantadores e clique em um dos botões de sorteio!
+                            Marque quem vai jogar, defina os levantadores e clique para sortear!
                         </div>
                     </div>
                 </div>
