@@ -1,21 +1,112 @@
-// Aguarda o documento HTML ser completamente carregado para executar o script
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Pega as referências dos botões e da área de exibição dos times
+    // --- SELETORES DE ELEMENTOS ---
     const btnSortearDuplas = document.getElementById('sortear-duplas');
     const btnSortearQuartetos = document.getElementById('sortear-quartetos');
     const btnResetar = document.getElementById('resetar');
     const timesContainer = document.getElementById('times-container');
+    const listaJogadoresContainer = document.getElementById('lista-jogadores');
+    
+    // Seletores para adicionar novo jogador
+    const btnAdicionarJogador = document.getElementById('btn-adicionar-jogador');
+    const novoJogadorNomeInput = document.getElementById('novo-jogador-nome');
+    const novoJogadorLevantadorCheckbox = document.getElementById('novo-jogador-levantador');
 
-    // Adiciona os "escutadores" de eventos de clique nos botões
-    btnSortearDuplas.addEventListener('click', () => realizarSorteio(2));
-    btnSortearQuartetos.addEventListener('click', () => realizarSorteio(4));
-    btnResetar.addEventListener('click', resetarSorteio);
+    // --- DADOS INICIAIS ---
+    const jogadoresIniciais = [
+        { nome: "Michele", icone: "🍉" }, { nome: "Bruna", icone: "🏐" },
+        { nome: "Adahil", icone: "🍺" }, { nome: "Filipe", icone: "🍹" },
+        { nome: "Dekon", icone: "🏐" }, { nome: "Liana", icone: "🦶" },
+        { nome: "Washington", icone: "🏐" }, { nome: "Amanda", icone: "👩" },
+        { nome: "Livinha", icone: "👩" }, { nome: "Lilian", icone: "🏐" },
+        { nome: "Dan", icone: "🧑‍🦲" }, { nome: "Larisse", icone: "🏐" },
+        { nome: "Daniel", icone: "🏐" }, { nome: "Jéssica", icone: "🏐" },
+        { nome: "Diego", icone: "🏐" }, { nome: "Renner", icone: "🏐" },
+        { nome: "Chokito", icone: "🏐" }, { nome: "Sarah", icone: "🏐" },
+        { nome: "Lairtu", icone: "🏐" }, { nome: "Nilton", icone: "🏐" },
+        { nome: "Lívia", icone: "🏐" }
+    ];
 
-    /**
-     * Função principal que realiza o sorteio.
-     * @param {number} tamanhoTime - O número de jogadores por time (2 ou 4).
-     */
+    // --- FUNÇÕES ---
+
+    /** Cria o elemento HTML para um jogador e o adiciona na lista */
+    function renderizarJogador(jogador) {
+        const jogadorId = `jogador-${jogador.nome.replace(/\s+/g, '-')}`;
+        const item = document.createElement('div');
+        item.className = 'list-group-item d-flex justify-content-between align-items-center';
+        item.innerHTML = `
+            <label for="${jogadorId}" class="form-check-label d-flex align-items-center">
+                <span class="me-2 icone-jogador">${jogador.icone}</span>
+                <span class="nome-jogador">${jogador.nome}</span>
+            </label>
+            <div class="d-flex align-items-center">
+                <div class="form-check form-switch me-3">
+                    <input class="form-check-input" type="checkbox" role="switch" id="${jogadorId}">
+                    <label class="form-check-label" for="${jogadorId}">Levantador</label>
+                </div>
+                <button class="btn btn-sm btn-outline-danger btn-remover">X</button>
+            </div>
+        `;
+        listaJogadoresContainer.appendChild(item);
+    }
+
+    /** Popula a lista inicial de jogadores */
+    function popularListaInicial() {
+        listaJogadoresContainer.innerHTML = '';
+        jogadoresIniciais.forEach(renderizarJogador);
+    }
+    
+    /** Adiciona um novo jogador a partir dos inputs do usuário */
+    function adicionarNovoJogador() {
+        const nome = novoJogadorNomeInput.value.trim();
+        if (!nome) {
+            alert('Por favor, digite o nome do jogador.');
+            return;
+        }
+
+        const novoJogador = {
+            nome: nome,
+            icone: '👤' // Ícone padrão para novos jogadores
+        };
+        
+        renderizarJogador(novoJogador);
+        
+        // Marca como levantador se a caixa estiver marcada
+        const novoJogadorId = `jogador-${nome.replace(/\s+/g, '-')}`;
+        const novoCheckbox = document.getElementById(novoJogadorId);
+        if (novoCheckbox && novoJogadorLevantadorCheckbox.checked) {
+            novoCheckbox.checked = true;
+        }
+
+        // Limpa os campos
+        novoJogadorNomeInput.value = '';
+        novoJogadorLevantadorCheckbox.checked = false;
+    }
+
+    /** Lê a lista de jogadores do HTML, retornando um array de objetos */
+    function getJogadoresDaLista() {
+        const jogadores = [];
+        const elementosJogadores = document.querySelectorAll('#lista-jogadores .list-group-item');
+        elementosJogadores.forEach(el => {
+            const nome = el.querySelector('.nome-jogador').textContent;
+            const icone = el.querySelector('.icone-jogador').textContent;
+            const checkbox = el.querySelector('.form-check-input');
+            jogadores.push({
+                nomeHTML: `<span class="me-2">${icone}</span> ${nome}`,
+                isLevantador: checkbox.checked
+            });
+        });
+        return jogadores;
+    }
+    
+    /** Embaralha um array usando o algoritmo Fisher-Yates */
+    function embaralharArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    /** Função principal que organiza e executa o sorteio */
     function realizarSorteio(tamanhoTime) {
         const todosJogadores = getJogadoresDaLista();
 
@@ -24,169 +115,99 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Separa os jogadores em duas listas: levantadores e os demais
         let levantadores = todosJogadores.filter(j => j.isLevantador);
         let outrosJogadores = todosJogadores.filter(j => !j.isLevantador);
 
-        // Embaralha as duas listas para garantir a aleatoriedade
         embaralharArray(levantadores);
         embaralharArray(outrosJogadores);
 
-        // Calcula quantos times podem ser formados
         const numeroDeTimes = Math.floor(todosJogadores.length / tamanhoTime);
-        const times = [];
+        const times = Array.from({ length: numeroDeTimes }, () => []);
+        
+        // 1. Distribui os levantadores
         for (let i = 0; i < numeroDeTimes; i++) {
-            times.push([]);
+            if (levantadores.length > 0) times[i].push(levantadores.pop());
         }
 
-        // 1. Distribui os levantadores, um para cada time se possível
-        for (let i = 0; i < numeroDeTimes; i++) {
-            if (levantadores.length > 0) {
-                // Pega o último levantador da lista embaralhada e o adiciona ao time
-                const levantador = levantadores.pop();
-                times[i].push(levantador);
-            }
-        }
+        // 2. Preenche o resto com outros jogadores
+        const poolJogadores = [...outrosJogadores, ...levantadores]; // Junta o que sobrou
+        embaralharArray(poolJogadores);
 
-        // Junta o que sobrou dos levantadores com os outros jogadores
-        const poolJogadores = [...outrosJogadores, ...levantadores];
-        embaralharArray(poolJogadores); // Embaralha o pool combinado
-
-        // 2. Preenche o restante das vagas nos times
         for (let i = 0; i < numeroDeTimes; i++) {
             while (times[i].length < tamanhoTime && poolJogadores.length > 0) {
-                const jogador = poolJogadores.pop();
-                times[i].push(jogador);
+                times[i].push(poolJogadores.pop());
             }
         }
         
-        // O que sobrou no pool são os jogadores que ficaram de fora
-        const jogadoresSobrando = poolJogadores;
-
-        exibirTimes(times, jogadoresSobrando);
+        exibirTimes(times, poolJogadores);
     }
 
-    /**
-     * Lê a lista de jogadores do HTML.
-     * @returns {Array<Object>} Uma lista de objetos, onde cada objeto representa um jogador.
-     */
-    function getJogadoresDaLista() {
-        const jogadores = [];
-        const elementosJogadores = document.querySelectorAll('#lista-jogadores .list-group-item');
-
-        elementosJogadores.forEach(el => {
-            const label = el.querySelector('label');
-            const checkbox = el.querySelector('.form-check-input');
-
-            jogadores.push({
-                nomeHTML: label.innerHTML, // Pega o nome com o ícone
-                isLevantador: checkbox.checked
-            });
-        });
-
-        return jogadores;
-    }
-
-    /**
-     * Embaralha os itens de um array usando o algoritmo Fisher-Yates.
-     * @param {Array} array - O array a ser embaralhado.
-     */
-    function embaralharArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    /**
-     * Exibe os times sorteados na tela. (VERSÃO CORRIGIDA)
-     * @param {Array<Array<Object>>} times - Um array contendo os times (que são arrays de jogadores).
-     * @param {Array<Object>} jogadoresSobrando - Um array com os jogadores que ficaram de fora.
-     */
+    /** (VERSÃO CORRIGIDA E ROBUSTA) Exibe os times e quem sobrou na tela */
     function exibirTimes(times, jogadoresSobrando) {
-        timesContainer.innerHTML = ''; // Limpa a área de resultados
+        timesContainer.innerHTML = ''; // Limpa a área antes de exibir
 
-        const timesCompletos = times.filter(time => time.length > 1);
+        const timesValidos = times.filter(time => time.length > 0);
 
-        if (timesCompletos.length === 0) {
-            exibirMensagem('Não foi possível formar times com os jogadores disponíveis.', 'warning');
-            // Mesmo sem times, mostramos quem sobrou
-             if (jogadoresSobrando.length > 0) {
-                const sobrasHTML = jogadoresSobrando.map(j => j.nomeHTML).join(', ');
-                const sobrasAlert = document.createElement('div');
-                sobrasAlert.className = 'col-12 mt-3';
-                sobrasAlert.innerHTML = `<div class="alert alert-secondary"><strong>Ficaram de fora:</strong> ${sobrasHTML}</div>`;
-                timesContainer.appendChild(sobrasAlert);
-            }
-            return;
+        if (timesValidos.length === 0) {
+            exibirMensagem('Não foi possível formar nenhum time completo.', 'info');
+        } else {
+            timesValidos.forEach((time, index) => {
+                const timeCard = document.createElement('div');
+                timeCard.className = 'col-lg-6 mb-4';
+                let jogadoresHTML = '<ul class="list-group list-group-flush">';
+                time.forEach(jogador => {
+                    const destaqueLevantador = jogador.isLevantador ? ' 👑<small class="text-muted"> (Levantador)</small>' : '';
+                    jogadoresHTML += `<li class="list-group-item">${jogador.nomeHTML}${destaqueLevantador}</li>`;
+                });
+                jogadoresHTML += '</ul>';
+                timeCard.innerHTML = `
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-dark text-white"><strong>Time ${index + 1}</strong></div>
+                        ${jogadoresHTML}
+                    </div>`;
+                timesContainer.appendChild(timeCard);
+            });
         }
 
-        // 1. Adiciona os cards dos times
-        timesCompletos.forEach((time, index) => {
-            const timeCard = document.createElement('div');
-            timeCard.className = 'col-lg-6 mb-4';
-
-            let jogadoresHTML = '<ul class="list-group list-group-flush">';
-            time.forEach(jogador => {
-                const levantadorIcon = jogador.isLevantador ? ' 👑<small class="text-muted"> (Levantador)</small>' : '';
-                jogadoresHTML += `<li class="list-group-item">${jogador.nomeHTML}${levantadorIcon}</li>`;
-            });
-            jogadoresHTML += '</ul>';
-
-            timeCard.innerHTML = `
-                <div class="card shadow-sm">
-                    <div class="card-header bg-dark text-white">
-                        <strong>Time ${index + 1}</strong>
-                    </div>
-                    ${jogadoresHTML}
-                </div>
-            `;
-            timesContainer.appendChild(timeCard);
-        });
-        
-        // 2. ADICIONA o alerta de quem sobrou, sem apagar os times
         if (jogadoresSobrando.length > 0) {
             const sobrasHTML = jogadoresSobrando.map(j => j.nomeHTML).join(', ');
-            
             const sobrasAlert = document.createElement('div');
-            sobrasAlert.className = 'col-12 mt-3'; // `mt-3` adiciona um espaço acima do alerta
-            sobrasAlert.innerHTML = `
-                <div class="alert alert-secondary">
-                    <strong>Ficaram de fora:</strong> ${sobrasHTML}
-                </div>
-            `;
-            timesContainer.appendChild(sobrasAlert); // Usa appendChild para ADICIONAR, não substituir
+            sobrasAlert.className = 'col-12 mt-3';
+            sobrasAlert.innerHTML = `<div class="alert alert-secondary"><strong>Ficaram de fora:</strong> ${sobrasHTML}</div>`;
+            timesContainer.appendChild(sobrasAlert);
         }
     }
 
-    /**
-     * Limpa a área de resultados e desmarca os levantadores.
-     */
+    /** Limpa os resultados e reseta o estado da UI */
     function resetarSorteio() {
-        // Restaura a mensagem inicial na área de times
+        popularListaInicial();
         timesContainer.innerHTML = `
             <div class="col-12">
-                <div class="alert alert-info">
-                    Os times sorteados aparecerão aqui!
-                </div>
+                <div class="alert alert-info">Selecione os levantadores e clique em um dos botões de sorteio!</div>
             </div>`;
-        
-        // Desmarca todos os checkboxes de levantador
-        const checkboxes = document.querySelectorAll('#lista-jogadores .form-check-input');
-        checkboxes.forEach(cb => cb.checked = false);
     }
-    
-    /**
-     * Função auxiliar para exibir mensagens na área de resultados.
-     * @param {string} mensagem - A mensagem a ser exibida.
-     * @param {string} tipo - O tipo do alerta Bootstrap (e.g., 'info', 'warning', 'danger').
-     */
+
+    /** Exibe uma mensagem genérica na área de resultados */
     function exibirMensagem(mensagem, tipo = 'info') {
-        timesContainer.innerHTML = `
-            <div class="col-12">
-                <div class="alert alert-${tipo}">
-                    ${mensagem}
-                </div>
-            </div>`;
+        timesContainer.innerHTML = `<div class="col-12"><div class="alert alert-${tipo}">${mensagem}</div></div>`;
     }
+
+    // --- EVENT LISTENERS ---
+    btnSortearDuplas.addEventListener('click', () => realizarSorteio(2));
+    btnSortearQuartetos.addEventListener('click', () => realizarSorteio(4));
+    btnResetar.addEventListener('click', resetarSorteio);
+    btnAdicionarJogador.addEventListener('click', adicionarNovoJogador);
+    novoJogadorNomeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') adicionarNovoJogador();
+    });
+
+    // Event listener para remover jogadores (usando delegação de eventos)
+    listaJogadoresContainer.addEventListener('click', (e) => {
+        if (e.target && e.target.classList.contains('btn-remover')) {
+            e.target.closest('.list-group-item').remove();
+        }
+    });
+
+    // --- INICIALIZAÇÃO ---
+    popularListaInicial();
 });

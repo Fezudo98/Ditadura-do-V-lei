@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ditadura do Vôlei - Sorteio de Times</title>
-    
-    <!-- Incluindo o Bootstrap para um design moderno e responsivo -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Nosso arquivo de CSS customizado (criaremos depois) -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,156 +18,25 @@
         <div class="row">
             <!-- Coluna da Esquerda: Controles e Lista de Jogadores -->
             <div class="col-md-5">
+                
+                <!-- SEÇÃO PARA ADICIONAR NOVOS JOGADORES -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Adicionar Jogador Avulso</h5>
+                        <div class="input-group">
+                            <input type="text" id="novo-jogador-nome" class="form-control" placeholder="Nome do jogador">
+                            <button class="btn btn-outline-primary" type="button" id="btn-adicionar-jogador">Adicionar</button>
+                        </div>
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="novo-jogador-levantador">
+                            <label class="form-check-label" for="novo-jogador-levantador">É levantador?</label>
+                        </div>
+                    </div>
+                </div>
+
                 <h4>Jogadores Disponíveis</h4>
                 <div id="lista-jogadores" class="list-group mb-4">
-                    <!-- Jogadores Pré-definidos -->
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🍉</span> Michele</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-michele">
-                            <label class="form-check-label" for="levantador-michele">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Bruna</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-bruna">
-                            <label class="form-check-label" for="levantador-bruna">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🍺</span> Adahil</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-adahil">
-                            <label class="form-check-label" for="levantador-adahil">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🍹</span> Filipe</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-filipe">
-                            <label class="form-check-label" for="levantador-filipe">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Dekon</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-dekon">
-                            <label class="form-check-label" for="levantador-dekon">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🦶</span> Liana</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-liana">
-                            <label class="form-check-label" for="levantador-liana">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Washington</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-washington">
-                            <label class="form-check-label" for="levantador-washington">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">👩</span> Amanda</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-amanda">
-                            <label class="form-check-label" for="levantador-amanda">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">👩</span> Livinha</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-livinha">
-                            <label class="form-check-label" for="levantador-livinha">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Lilian</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-lilian">
-                            <label class="form-check-label" for="levantador-lilian">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🧑‍🦲</span> Dan</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-dan">
-                            <label class="form-check-label" for="levantador-dan">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Larisse</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-larisse">
-                            <label class="form-check-label" for="levantador-larisse">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Daniel</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-daniel">
-                            <label class="form-check-label" for="levantador-daniel">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Jéssica</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-jessica">
-                            <label class="form-check-label" for="levantador-jessica">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Diego</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-diego">
-                            <label class="form-check-label" for="levantador-diego">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Renner</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-renner">
-                            <label class="form-check-label" for="levantador-renner">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Chokito</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-chokito">
-                            <label class="form-check-label" for="levantador-chokito">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Sarah</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-sarah">
-                            <label class="form-check-label" for="levantador-sarah">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Lairtu</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-lairtu">
-                            <label class="form-check-label" for="levantador-lairtu">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Nilton</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-nilton">
-                            <label class="form-check-label" for="levantador-nilton">Levantador</label>
-                        </div>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <label><span class="me-2">🏐</span> Lívia</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="levantador-livia">
-                            <label class="form-check-label" for="levantador-livia">Levantador</label>
-                        </div>
-                    </div>
+                    <!-- A lista de jogadores será populada pelo JS -->
                 </div>
 
                 <h4>Controles</h4>
@@ -188,7 +53,7 @@
                 <div id="times-container" class="row">
                     <div class="col-12">
                         <div class="alert alert-info">
-                            Os times sorteados aparecerão aqui!
+                            Selecione os levantadores e clique em um dos botões de sorteio!
                         </div>
                     </div>
                 </div>
@@ -196,9 +61,7 @@
         </div>
     </div>
 
-    <!-- Incluindo o JavaScript do Bootstrap (necessário para alguns componentes) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Nosso arquivo de JavaScript com a lógica do sorteio (criaremos depois) -->
     <script src="script.js"></script>
 </body>
 </html>
