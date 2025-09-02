@@ -1,0 +1,72 @@
+/* --- Importando uma fonte mais moderna do Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- Estilos Gerais --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6; /* Um fundo cinza bem claro, mais suave que branco */
+    color: #333;
+}
+
+/* --- Layout Principal --- */
+.container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 15px; /* Cantos mais arredondados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidade */
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* --- Cabeçalho --- */
+header h1 {
+    font-weight: 700; /* Letra mais grossa para o título principal */
+    color: #2c3e50; /* Um tom de azul escuro/cinza */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+header .lead {
+    color: #555;
+}
+
+/* --- Times Sorteados --- */
+#times-container .card {
+    border: none; /* Remove a borda padrão do card */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#times-container .card:hover {
+    transform: translateY(-5px); /* Efeito de "levantar" o card ao passar o mouse */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* Aumenta a sombra no hover */
+}
+
+.card-header strong {
+   letter-spacing: 0.5px; /* Leve espaçamento entre as letras para um look mais refinado */
+}
+
+/* Adiciona um ícone de coroa para destacar o levantador de forma mais visual */
+.list-group-item .text-muted {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #e67e22 !important; /* Cor de destaque para o levantador */
+}
+
+/* --- Controles e Botões --- */
+.list-group-item {
+    transition: background-color 0.2s ease-in-out;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa; /* Cor sutil ao passar o mouse na lista de jogadores */
+}
+
+.btn {
+   transition: all 0.2s ease-in-out;
+   font-weight: 600; /* Deixa o texto do botão mais forte */
+   padding: 10px 15px;
+   border-radius: 8px;
+}
+
+.btn:hover {
+    transform: scale(1.03); /* Efeito de leve crescimento ao passar o mouse */
+}
